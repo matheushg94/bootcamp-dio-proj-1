@@ -1,0 +1,8 @@
+:root {
+    /* fonts */
+    --font: "Press Start 2P", cursive;
+
+    /* colors */
+    --red: #ff0000;
+    --bg: rgb(253, 210, 210);
+}
