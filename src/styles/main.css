@@ -5,32 +5,44 @@ main {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    background: url('../images/wall.png') repeat;
 }
 
 .menu {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-evenly;
     align-items: center;
     width: 100vw;
     padding: 1rem;
     background-color: #000;
     color: #fff;
+    border-bottom: 5px solid var(--line);
 }
 
 .menu-item {
     display: flex;
     flex-direction: column;
     gap: .5rem;
+    align-items: center;
 }
 
 .menu-item__header {
     color: var(--red);
+    text-transform: uppercase;
+}
+
+.menu-lives {
+    flex-direction: row;
+}
+
+.menu-item__icon {
+    height: 60px;
 }
 
 .panel {
     display: flex;
     justify-content: center;
-    margin-top: 1rem;
+    margin-top: 2rem;
 }
 
 .square {
@@ -41,5 +53,6 @@ main {
 }
 
 .enemy {
-    background-color: var(--red);
+    background: var(--bg) url('../images/ralph.png') no-repeat center;
+    background-size: cover;
 }
