@@ -3,13 +3,15 @@ const state = {
     view: {
         squares: document.querySelectorAll(".square"),
         enemy: document.querySelector(".enemy"),
-        score: document.querySelector("#score"),
+        scoreDisplay: document.querySelector("#score"),
         timeLeft: document.querySelector("#time-left"),
         lives: document.querySelector("#lives")
     },
     values: {
         timerId: null,
-        enemySpeed: 1000
+        enemySpeed: 1000,
+        hitBoxPosition: 0,
+        score: 0
     }
 };
 
@@ -21,6 +23,8 @@ function randomizeEnemy() {
     let randomNumber = Math.floor(Math.random() * 9);
     let randomSquare = state.view.squares[randomNumber];
     randomSquare.classList.add("enemy");
+
+    state.values.hitBoxPosition = randomSquare.id;
 }
 
 function moveEnemy() {
@@ -29,13 +33,20 @@ function moveEnemy() {
 
 function addListenerHitBox() {
     state.view.squares.forEach(square => {
-
+        square.addEventListener("mousedown", () => {
+            if (square.id === state.values.hitBoxPosition) {
+                state.values.score++;
+                state.view.scoreDisplay.innerHTML = state.values.score;
+                state.values.hitBoxPosition = null;
+            }
+        })
     })
 }
 
 function initialize() {
     randomizeEnemy();
     moveEnemy();
+    addListenerHitBox();
 }
 
 initialize();
