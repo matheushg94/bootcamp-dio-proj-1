@@ -1,4 +1,4 @@
-// objeto com as variáveis globais da app, separadas em view (quando alteram elementos visuais) e values
+// objeto com as variáveis globais da app, separadas em view (quando alteram elementos visuais), values (armazenam valores internos) e actions (armazenam métodos)
 const state = {
     view: {
         squares: document.querySelectorAll(".square"),
@@ -8,12 +8,33 @@ const state = {
         lives: document.querySelector("#lives")
     },
     values: {
-        timerId: null,
         enemySpeed: 1000,
         hitBoxPosition: 0,
-        score: 0
+        score: 0,
+        currentTime: 60,
+    },
+    actions: {
+        enemyMovementTimer: null,
+        countDownTimer: setInterval(countDown, 1000)
     }
 };
+
+function countDown() {
+    state.values.currentTime--;
+    state.view.timeLeft.innerHTML = state.values.currentTime;
+
+    if (state.values.currentTime <= 0) {
+        clearInterval(state.actions.countDownTimer);
+        clearInterval(state.actions.enemyMovementTimer);
+        alert("Time over! Yout final score is:" + state.values.score);
+    }
+}
+
+function playAudio(audioName) {
+    let audio = new Audio(`./src/audios/${audioName}.m4a`);
+    audio.volume = 0.2;
+    audio.play();
+}
 
 function randomizeEnemy() {
     state.view.squares.forEach(square => {
@@ -28,7 +49,7 @@ function randomizeEnemy() {
 }
 
 function moveEnemy() {
-    state.values.timerId = setInterval(randomizeEnemy, state.values.enemySpeed);
+    state.values.enemyMovementTimer = setInterval(randomizeEnemy, state.values.enemySpeed);
 }
 
 function addListenerHitBox() {
@@ -38,12 +59,14 @@ function addListenerHitBox() {
                 state.values.score++;
                 state.view.scoreDisplay.innerHTML = state.values.score;
                 state.values.hitBoxPosition = null;
+                playAudio("hit");
             }
         })
     })
 }
 
 function initialize() {
+    state.view.timeLeft.innerHTML = state.values.currentTime;
     randomizeEnemy();
     moveEnemy();
     addListenerHitBox();
